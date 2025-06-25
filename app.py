@@ -12,6 +12,8 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
+from utils import redact_sensitive_info
+
 
 # -------------------- CONFIG --------------------
 st.set_page_config(page_title="📄 DocuSense AI", layout="wide")
@@ -26,6 +28,11 @@ st.markdown("""
 # -------------------- HEADER --------------------
 st.sidebar.title("📥 Upload PDFs")
 uploaded_files = st.sidebar.file_uploader("Upload one or more PDFs", type=["pdf"], accept_multiple_files=True)
+
+# ⛨ Sidebar: Redaction toggle
+st.sidebar.markdown("## 🛡️ Privacy Settings")
+st.sidebar.toggle("🔒 Enable Redaction", value=True, key="enable_redaction")
+
 
 st.title("📄 DocuSense AI — Multi-PDF Q&A Assistant")
 st.caption("Your smart, private PDF research assistant 🧠 — powered by LLMs")
