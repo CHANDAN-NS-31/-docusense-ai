@@ -22,8 +22,17 @@ st.markdown("""
     body {font-size: 1.1rem;}
     .stMarkdown h1 {color: #FF4B4B; font-size: 2.6rem;}
     .stMarkdown p, .stMarkdown li, .stMarkdown div {font-size: 1.05rem !important;}
+    .typing-card {
+        background-color: #f9f9f9;
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        box-shadow: 0px 1px 6px rgba(0,0,0,0.05);
+        margin-bottom: 1rem;
+    }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+
 
 # -------------------- HEADER --------------------
 st.sidebar.title("📥 Upload PDFs")
@@ -123,8 +132,17 @@ if retrievers:
         if st.button("Ask") and query:
             answer = ask_question(query, retriever)
             st.session_state.chat_history.append((query, answer))
+            
             st.success("✅ Answer:")
-            st.markdown(f"\n".join(textwrap.wrap(answer.strip(), width=100)))
+            st.markdown('<div class="typing-card">', unsafe_allow_html=True)
+            for line in textwrap.wrap(answer.strip(), width=100):
+                st.markdown(line)
+                time.sleep(0.2)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+            # ✂️ Add Copy Button
+            with st.expander("📋 Copy this answer"):
+                st.code(answer, language="markdown")
 
     with col2:
         if st.button("📜 Summarize This PDF"):
@@ -139,7 +157,7 @@ if retrievers:
         st.markdown("---")
         st.subheader("🧠 Q&A History")
         for i, (q, a) in enumerate(reversed(st.session_state.chat_history)):
-            st.markdown(f"**Q{i+1}:** {q}")
-            st.markdown(f"_A{i+1}:_ {a}")
+            with st.expander(f"**Q{i+1}: {q}**"):
+                st.markdown(a)
 else:
     st.info("📂 Upload one or more PDFs to begin.")
