@@ -1,0 +1,10 @@
+streamlit
+langchain
+langchain-community
+langchain-huggingface
+sentence-transformers
+faiss-cpu
+pymupdf
+python-dotenv
+huggingface_hub[hf_xet]
+requests

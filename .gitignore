@@ -1,0 +1,19 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+
+# Ignore environment variables
+.env
+
+# Ignore VS Code project settings
+.vscode/
+
+# Ignore exported PDF
+DocuSense_QA_Export.pdf
+
+# Ignore uploaded PDFs (optional)
+*.pdf
+pdfs/
+
+# Ignore Jupyter notebook checkpoints (if using .ipynb)
+.ipynb_checkpoints/
