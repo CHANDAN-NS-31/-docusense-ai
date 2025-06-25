@@ -8,3 +8,5 @@ pymupdf
 python-dotenv
 huggingface_hub[hf_xet]
 requests
+fpdf
+
