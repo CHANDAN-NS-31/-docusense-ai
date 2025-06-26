@@ -44,7 +44,7 @@ Upload multiple PDFs and ask questions, generate summaries, toggle redaction, an
 ---
 ### 📜 Live demo page
 
-![Demo Page](screenshots/live_demo_page1.png)
+![Demo Page](screenshots/Live_demo_page1.png)
 
 
 
