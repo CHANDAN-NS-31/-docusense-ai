@@ -97,11 +97,63 @@ def ask_question(query, retriever):
     results = retriever.get_relevant_documents(query)
     context = "\n\n".join([doc.page_content for doc in results[:2]])
     context = redact_sensitive_info(context)
-    prompt = f"""You are a helpful assistant. Use the following PDF content to answer the question.\n\n📘 Context:\n{context}\n\n❓ Question:\n{query}\n\n🧠 Answer:"""
+
+    # Check for user preference in query
+    query_lower = query.lower()
+    if any(word in query_lower for word in ["only points", "in points", "bullet points"]):
+        mode = "points"
+    elif any(word in query_lower for word in ["only summary", "summary only", "in summary", "brief answer"]):
+        mode = "summary"
+    else:
+        mode = "both"
+
+    # Prompt template based on detected mode
+    if mode == "points":
+        prompt = f"""
+Use the following PDF content to answer the user's question **in bullet points only**.
+
+📘 Context:
+{context}
+
+❓ Question:
+{query}
+
+📌 Answer as bullet points:
+"""
+    elif mode == "summary":
+        prompt = f"""
+Use the following PDF content to provide a **brief paragraph summary only** (3–5 lines).
+
+📘 Context:
+{context}
+
+❓ Question:
+{query}
+
+🧾 Answer as a paragraph:
+"""
+    else:
+        prompt = f"""
+Use the following PDF content to answer the user's question in **two formats**:
+
+📘 Context:
+{context}
+
+❓ Question:
+{query}
+
+🧾 1. Paragraph Summary (3–5 lines):
+
+📌 2. Bullet Points:
+"""
+
     prompt = redact_sensitive_info(prompt)
+
     with st.spinner("🤖 Generating answer..."):
         response = call_openrouter_api(prompt)
+
     return response
+
 
 # -------------------- FUNCTION: Summarize PDF --------------------
 def summarize_pdf(retriever):
