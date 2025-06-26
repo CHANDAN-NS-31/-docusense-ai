@@ -82,26 +82,26 @@ def call_openrouter_api(prompt):
     except Exception as e:
         return f"❌ Error: {e}"
 
+# -------------------- FUNCTION: Export to PDF --------------------
 from fpdf import FPDF
 
-class UnicodePDF(FPDF):
-    def __init__(self):
-        super().__init__()
-        self.add_font('DejaVu', '', 'DejaVuSans.ttf', uni=True)
-        self.set_font("DejaVu", size=12)
-
 def export_to_pdf(history):
-    pdf = UnicodePDF()
+    pdf = FPDF()
     pdf.add_page()
+    pdf.set_font("Arial", size=12)
 
     for i, (q, a) in enumerate(history):
-        pdf.multi_cell(0, 10, f"Q{i+1}: {q}")
-        pdf.ln(1)
-        pdf.multi_cell(0, 10, f"A{i+1}: {a}")
-        pdf.ln(5)
+        try:
+            text = f"Q{i+1}: {q}\nA{i+1}: {a}\n{'-'*60}"
+            # Strip unsupported characters safely
+            pdf.multi_cell(0, 10, text.encode('latin-1', 'ignore').decode('latin-1'))
+        except Exception as e:
+            st.error(f"⚠️ Could not write entry {i+1}: {e}")
 
-    pdf.output("DocuSense_QA_Export.pdf", 'F')
+    pdf.output("DocuSense_QA_Export.pdf")
     st.success("✅ Exported to DocuSense_QA_Export.pdf")
+    with open("DocuSense_QA_Export.pdf", "rb") as f:
+        st.download_button("⬇️ Download PDF", f, file_name="DocuSense_QA_Export.pdf", mime="application/pdf")
 
 
 # -------------------- FUNCTION: Ask Question --------------------
