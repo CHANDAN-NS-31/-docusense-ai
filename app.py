@@ -82,15 +82,27 @@ def call_openrouter_api(prompt):
     except Exception as e:
         return f"❌ Error: {e}"
 
-# -------------------- FUNCTION: Export to PDF --------------------
+from fpdf import FPDF
+
+class UnicodePDF(FPDF):
+    def __init__(self):
+        super().__init__()
+        self.add_font('DejaVu', '', 'DejaVuSans.ttf', uni=True)
+        self.set_font("DejaVu", size=12)
+
 def export_to_pdf(history):
-    pdf = FPDF()
+    pdf = UnicodePDF()
     pdf.add_page()
-    pdf.set_font("Arial", size=12)
+
     for i, (q, a) in enumerate(history):
-        pdf.multi_cell(0, 10, f"Q{i+1}: {q}\nA{i+1}: {a}\n{'-'*60}")
-    pdf.output("DocuSense_QA_Export.pdf")
+        pdf.multi_cell(0, 10, f"Q{i+1}: {q}")
+        pdf.ln(1)
+        pdf.multi_cell(0, 10, f"A{i+1}: {a}")
+        pdf.ln(5)
+
+    pdf.output("DocuSense_QA_Export.pdf", 'F')
     st.success("✅ Exported to DocuSense_QA_Export.pdf")
+
 
 # -------------------- FUNCTION: Ask Question --------------------
 def ask_question(query, retriever):
