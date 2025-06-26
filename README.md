@@ -42,6 +42,26 @@ Upload multiple PDFs and ask questions, generate summaries, toggle redaction, an
 | 🎨 Modern UI/UX                  | SaaS-style sidebar, emoji-rich design, responsive interface |
 
 ---
+### 📜 Live demo page
+
+![Demo Page](screenshots/live_demo_page1.png)
+
+
+
+### 🔍 Live Q&A in Action
+
+![Q&A](screenshots/live_demo_page2.png)
+![Q&A](screenshots/export Q&A to PDF and download.png)
+
+
+### 📜 Summarization Feature
+
+![Summarize](screenshots/summarize_the_pdf.png)
+
+### 🧼 Redaction Toggle
+
+![Redaction](screenshots/privacy_enable.png)
+
 
 ## 🛡️ What Gets Redacted?
 
